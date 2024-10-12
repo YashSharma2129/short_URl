@@ -30,9 +30,18 @@ app.get("/url/:shortId", async (req, res) => {
       $push: {
         visitHistory: { timestamp: Date.now() },
       },
-    }
+    },
+    { new: true }
   );
-  res.redirect(entry.redirectUrl);
+
+  if (!entry) {
+    return res.status(404).send("Not found");
+  }
+
+  const originalUrl = entry.redirectUrl;
+
+  const fullUrl = `https://${originalUrl}`; // Change to https if needed
+  res.redirect(fullUrl);
 });
 
 app.listen(port, () => {
