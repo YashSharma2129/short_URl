@@ -1,10 +1,14 @@
 const express = require("express");
 const path = require("path");
 const connect = require("./connect");
-const urlRoute = require("./router/url");
-const staticRoute = require("./router/staticRouter");
+const { restrictToLoginUserOnly, checkAuth } = require("./middleware/auth");
+
+const cookieparser = require("cookie-parser");
 const URL = require("./models/url");
 const shortid = require("shortid");
+const urlRoute = require("./router/url");
+const staticRoute = require("./router/staticRouter");
+const userRoute = require("./router/user");
 
 const app = express();
 const port = 3000;
@@ -18,8 +22,11 @@ app.set("views", path.resolve("./views"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/url", urlRoute);
-app.use("/", staticRoute);
+app.use(cookieparser());
+
+app.use("/url", restrictToLoginUserOnly, urlRoute);
+app.use("/", checkAuth, staticRoute);
+app.use("/user", userRoute);
 
 app.get("/url/:shortId", async (req, res) => {
   const shortId = req.params.shortId;

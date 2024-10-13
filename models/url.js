@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const moongoose = require("mongoose");
 
 const urlSchema = new moongoose.Schema(
@@ -10,8 +11,12 @@ const urlSchema = new moongoose.Schema(
     redirectUrl: {
       type: String,
       required: true,
+      unique:true,
     },
-    visitHistory: [{ timestamp: { type: Number } }],
+    visitHistory: [{ timestamp: { type: Number } }],createdBy:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"users",
+    },
   },
   {
     timestamps: true,

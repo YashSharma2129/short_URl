@@ -12,18 +12,17 @@ async function handleGeneateShortURl(req, res) {
     shortId: shortId,
     redirectUrl: body.url,
     visitHistory: [],
+    createdBy: req.user_id,
   });
 
-  return res.render("home",{
-    id:shortId,
+  return res.render("home", {
+    id: shortId,
   });
 }
 
 async function handleGetAnalytics(req, res) {
   const shortId = req.params.shortId;
   const reault = await URL.findOne({ shortId });
-
-  
 
   return res.json({
     totalclicks: reault.visitHistory.length,
