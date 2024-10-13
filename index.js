@@ -25,13 +25,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieparser());
 
 app.use("/url", restrictToLoginUserOnly, urlRoute);
-app.use("/", checkAuth, staticRoute);
+app.use("/", staticRoute);
 app.use("/user", userRoute);
 
 app.get("/url/:shortId", async (req, res) => {
   const shortId = req.params.shortId;
 
-  const entry = await URL.findOneAndUpdate(
+  const entry = await URL.findOneAgenendUpdate(
     { shortId },
     {
       $push: {

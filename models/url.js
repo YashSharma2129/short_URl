@@ -1,7 +1,6 @@
-const { default: mongoose } = require("mongoose");
-const moongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-const urlSchema = new moongoose.Schema(
+const urlSchema = new mongoose.Schema(
   {
     shortId: {
       type: String,
@@ -13,9 +12,10 @@ const urlSchema = new moongoose.Schema(
       required: true,
       unique:true,
     },
-    visitHistory: [{ timestamp: { type: Number } }],createdBy:{
+    visitHistory: [{ timestamp: { type: Number } }],
+    createdBy:{
       type:mongoose.Schema.Types.ObjectId,
-      ref:"users",
+      ref:"User",
     },
   },
   {
@@ -23,6 +23,6 @@ const urlSchema = new moongoose.Schema(
   }
 );
 
-const Url = moongoose.model("url", urlSchema);
+const Url = mongoose.model("url", urlSchema);
 
 module.exports = Url;
